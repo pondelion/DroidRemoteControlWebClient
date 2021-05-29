@@ -7,7 +7,9 @@ import {
   AuthenticationDetails
 } from 'amazon-cognito-identity-js'
 import Button from '@material-ui/core/Button'
-import Input from '@material-ui/core/Input'
+import TextField from '@material-ui/core/TextField'
+import Container from '@material-ui/core/Container'
+import Paper from '@material-ui/core/Paper';
 import awsConfiguration from '../AwsConfiguration'
 
 
@@ -55,17 +57,44 @@ const SignIn: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <div className="SignIn">
-      <h1>Sign In</h1>
-      <div>
-        <Input type="text" placeholder='username' onChange={changedUserNameHaldler}/>
-        <Input type="text" placeholder='password' onChange={changedPasswordHandler}/>
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={3} style={{padding: "10px 50px 30px", marginTop: 20}}>
+      <div className="SignIn">
+        <h1>
+          Sign In
+        </h1>
+        <div>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="User Name"
+            name="username"
+            autoComplete="User Name"
+            onChange={changedUserNameHaldler}
+          />
+        </div>
+        <div>
+          <TextField
+            type="password"
+            margin="normal"
+            required
+            fullWidth
+            id="password"
+            label="Password"
+            name="password"
+            autoComplete="Password"
+            onChange={changedPasswordHandler}
+          />
+        </div>
+        <div style={{marginTop: 20}}>
+          <Button variant="contained" color="primary" onClick={signIn}>Sign In</Button>
+        </div>
+        <div style={{color:'red', fontWeight:'bold', marginTop: 20}}>{errMsg}</div>
       </div>
-      <div>
-        <Button variant="contained" color="primary" onClick={signIn}>Sign In</Button>
-      </div>
-      <div style={{color:'red', fontWeight:'bold'}}>{errMsg}</div>
-    </div>
+      </Paper>
+    </Container>
   )
 }
 

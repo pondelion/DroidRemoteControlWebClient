@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './App.css';
 import Amplify, { Auth } from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub';
+import Container from '@material-ui/core/Container'
 import awsConfiguration from './AwsConfiguration';
 import SignIn from './auth/SignIn';
 // import SignOut from './auth/SignOut';
@@ -75,7 +76,11 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <ButtonAppBar signedIn={signedIn} setSignedIn={setSignedIn}/>
-      { contents() }
+      <Container component="main" maxWidth="lg">
+        <div>
+        { contents() }
+        </div>
+      </Container>
     </div>
   )
 }

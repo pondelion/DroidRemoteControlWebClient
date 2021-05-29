@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
 import './App.css';
-import { withAuthenticator } from 'aws-amplify-react';
 import Amplify, { PubSub, Auth } from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub';
 import awsConfiguration from '../AwsConfiguration'
@@ -31,7 +29,7 @@ class PubSubHelper {
     await PubSub.publish(topic, message)    
   }
   
-  static async handleSubscribe(
+  static async subscribe(
     topic: string,
     onReceiveCallback: (msg: string) => void,
     onErrorCallback: (err: any) => void = (err: any) => { console.log(err) },
