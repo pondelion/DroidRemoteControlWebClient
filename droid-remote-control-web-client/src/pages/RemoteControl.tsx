@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import Container from '@material-ui/core/Container';
 import Publish from '../components/Publish';
 import Subscribe from '../components/Subscribe';
 
@@ -61,20 +62,22 @@ const RemoteControl: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <Paper elevation={3} style={{padding: "10px 50px 30px", marginTop: 20}}>
-        <AppBar position="static">
-          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-            <Tab label="Publish" {...a11yProps(0)} />
-            <Tab label="Subscribe" {...a11yProps(1)} />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
-          <Publish />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Subscribe />
-        </TabPanel>
-      </Paper>
+      <Container component="main" maxWidth="md">
+        <Paper elevation={3} style={{padding: "10px 50px 30px", marginTop: 20}}>
+          <AppBar position="static">
+            <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+              <Tab label="Publish" {...a11yProps(0)} />
+              <Tab label="Subscribe" {...a11yProps(1)} />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <Publish />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Subscribe />
+          </TabPanel>
+        </Paper>
+      </Container>
     </div>
   );
 }

@@ -11,33 +11,40 @@ import ButtonAppBar from './components/Header'
 
 
 Amplify.configure({
-    Auth: {
-        identityPoolId: awsConfiguration.IDENTITY_POOL_ID, 
-        region: awsConfiguration.REGION,
-        userPoolId: awsConfiguration.USER_POOL_ID, 
-        userPoolWebClientId: awsConfiguration.CLIENT_ID, 
-    }
+  Auth: {
+      identityPoolId: awsConfiguration.IDENTITY_POOL_ID,
+      region: awsConfiguration.REGION,
+      userPoolId: awsConfiguration.USER_POOL_ID,
+      userPoolWebClientId: awsConfiguration.CLIENT_ID,
+  }
 });
 
-Amplify.addPluggable(new AWSIoTProvider({
-  aws_pubsub_region: awsConfiguration.REGION,
-  aws_pubsub_endpoint: `wss://${awsConfiguration.IOT_ENDPOINT}/mqtt`,
-  clientId: awsConfiguration.IOT_THING_NAME
-}))
+Auth.currentCredentials().then(info => {
+  const cognitoIdentityId = info.identityId;
+  console.log("cognito identity id", cognitoIdentityId);
+  Amplify.addPluggable(new AWSIoTProvider({
+    aws_pubsub_region: awsConfiguration.REGION,
+    aws_pubsub_endpoint: `wss://${awsConfiguration.IOT_ENDPOINT}/mqtt`,
+    clientId: awsConfiguration.IOT_THING_NAME
+  }));
+});
 
 const App: React.FC = () => {
 
-  const [signedIn, setSignedIn] = React.useState<boolean|null>(null)
+  const [signedIn, setSignedIn] = React.useState<boolean|null>(null);
+  const [signedInUserName, setSignedInUserName] = React.useState<string>("");
 
   useEffect(() => {
     const checkSignedIn = async () => {
-      const currentSession = await Auth.currentUserInfo();
-      if (currentSession) {
-        setSignedIn(true)
-        console.log('signed in')
+      const userInfo  = await Auth.currentUserInfo();
+      if (userInfo) {
+        setSignedIn(true);
+        setSignedInUserName(userInfo.username);
+        console.log('signed in');
       } else {
-        setSignedIn(false)
-        console.log('signed out')
+        setSignedIn(false);
+        setSignedInUserName("");
+        console.log('signed out');
       }
     }
     checkSignedIn();
@@ -46,7 +53,7 @@ const App: React.FC = () => {
   const signedInContents = () => {
     return (
       <div className="authorizedMode">
-        <h1>You're now signed in.</h1>
+        <h3>You're now signed in as {signedInUserName}.</h3>
         {/* <SignOut setSignedIn={setSignedIn} /> */}
         <RemoteControl />
       </div>
@@ -67,9 +74,9 @@ const App: React.FC = () => {
         <div>Checking signed in status...</div>
       )
     } else if (signedIn === true) {
-      return signedInContents()
+      return signedInContents();
     } else if (signedIn === false) {
-      return signedOutContents()
+      return signedOutContents();
     }
   }
 
